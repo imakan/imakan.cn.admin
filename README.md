@@ -1,3 +1,3 @@
 ### admin
 
-A daruk project
+imakan.cn 网站后台，持续更新...
