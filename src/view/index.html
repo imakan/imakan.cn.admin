@@ -1,0 +1,32 @@
+<html>
+  <head>
+    <title>admin</title>
+    <meta charSet="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <script type="text/javascript" src="http://lib.sinaapp.com/js/jquery/3.1.0/jquery-3.1.0.min.js"></script>
+  </head>
+
+  <body style="padding-top: 200px;text-align: center">
+    <input type="text" id="hospitalName" value="309" /><br />
+    <button onclick="getHospitaldetail()">查找医院代码</button><br />
+  </body>
+  <script>
+    let getHospitaldetail = () => {
+      let hospitalName = $('#hospitalName').val();
+      let data = {
+        hospitalName: hospitalName
+      };
+      $.ajax({
+        url: '/hospital',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify(data),
+        success: function(result) {
+          console.log(result);
+        }
+      });
+    };
+  </script>
+</html>
