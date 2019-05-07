@@ -4,10 +4,10 @@ exports.default = {
     mysql: (entities) => {
         return {
             type: 'mysql',
-            host: '39.105.204.243',
+            host: '127.0.0.1',
             port: 3306,
             username: 'root',
-            password: '921027',
+            password: 'mk921027',
             database: 'imakan.cn',
             entities,
             synchronize: true,

@@ -24,8 +24,16 @@ class Hospital extends daruk_1.BaseController {
         }
     }
     async all() {
-        const { hospital } = this.service;
-        this.ctx.body = await hospital.queryAll();
+        const { error, value } = Joi.validate(this.ctx.request.body, this.params.getAllHospitalDetail);
+        if (error) {
+            this.ctx.body = { code: 403, message: error.details[0].message };
+        }
+        else {
+            const { hospital } = this.service;
+            let currentPage = value.currentPage;
+            let pageSize = value.pageSize;
+            this.ctx.body = await hospital.queryAll(currentPage, pageSize);
+        }
     }
 }
 __decorate([
@@ -39,7 +47,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], Hospital.prototype, "index", null);
 __decorate([
-    daruk_1.get('/all'),
+    daruk_1.post('/all'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", Promise)

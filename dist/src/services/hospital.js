@@ -13,8 +13,8 @@ const daruk_1 = require("daruk");
 const iconv = require("iconv-lite");
 const rp = require("request-promise");
 const hospital_1 = require("../model/hospital");
-let code_regExp = /<a.+\"detail04_new\.jsp\?id=\d{8,}\">(\d{8,})<\/a>/g;
-let name_regExp = /<a.+\"detail04_new\.jsp\?id=\d{8,}\">([^0-9].+)/g;
+let code_regExp = /<a.+\"detail01_new\.jsp\?id=\d{8,}\">(\d{8,})<\/a>/g;
+let name_regExp = /<a.+\"detail01_new\.jsp\?id=\d{8,}\">([^0-9].+)/g;
 let county_regExp = /<td .+width=\"126\".+>(.+)<\/span><\/td>/g;
 let type_regExp = /<td .+width=\"100\".+>(.+)<\/span><\/td>/g;
 let level_regExp = /<td .+width=\"88\".+>(.+)<\/span><\/td>/g;
@@ -29,10 +29,11 @@ let matchResult = (str, regExp) => {
     return arr;
 };
 let getHospitalDetail = async (hospitalName) => {
+    let currentPage = 20 * 1;
     return new Promise((resolve) => {
         let options = {
             method: 'GET',
-            uri: 'http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/ddyy_01_outline_new.jsp?sno=0&spage=0&epage=5&leibie=00&suoshu=00&sword=' + hospitalName
+            uri: `http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/ddyy_01_outline_new.jsp?sno=${currentPage}&spage=0&epage=0&leibie=00&suoshu=00&sword=` + hospitalName
         };
         rp(options)
             .on('response', (res) => {
@@ -71,7 +72,7 @@ let getHospitalAddress = async (hospitalCode) => {
     return new Promise((resolve) => {
         let options = {
             method: 'GET',
-            uri: `http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/detail04_new.jsp?id=${hospitalCode}`
+            uri: `http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/detail01_new.jsp?id=${hospitalCode}`
         };
         rp(options)
             .on('response', (res) => {
@@ -93,10 +94,17 @@ let getHospitalAddress = async (hospitalCode) => {
     });
 };
 class HospitalServer extends daruk_1.BaseService {
-    async queryAll() {
-        let _result = { code: 200, message: '', stack: '', data: new Array() };
+    async queryAll(currentPage, pageSize) {
+        let _result = { code: 200, message: '', stack: '', data: new Array(), total: 0 };
+        console.log(pageSize);
+        console.log(currentPage);
         try {
-            _result.data = await this.db(hospital_1.Hospital).getMany();
+            let detail = await this.db(hospital_1.Hospital)
+                .skip((currentPage - 1) * pageSize)
+                .take(pageSize)
+                .getManyAndCount();
+            _result.data = detail[0];
+            _result.total = detail[1];
         }
         catch (e) {
             _result.code = 500;

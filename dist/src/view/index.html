@@ -8,14 +8,16 @@
   </head>
 
   <body style="padding-top: 200px;text-align: center">
-    <input type="text" id="hospitalName" value="309" /><br />
-    <button onclick="getHospitaldetail()">查找医院代码</button><br />
+    <input type="text" id="hospitalName" value="航空" /><br />
+    <button onclick="getHospitaldetail(1)">查找医院代码</button><br />
   </body>
   <script>
-    let getHospitaldetail = () => {
+    let getHospitaldetail = (i) => {
+      if (i === 142) return false;
       let hospitalName = $('#hospitalName').val();
       let data = {
-        hospitalName: hospitalName
+        hospitalName: hospitalName,
+        current: i
       };
       $.ajax({
         url: '/hospital',

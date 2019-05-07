@@ -1,7 +1,8 @@
-import { getHospitalDetail } from './hospital';
+import { getAllHospitalDetail, getHospitalDetail } from './hospital';
 
 export default () => {
   return {
-    getHospitalDetail
+    getHospitalDetail,
+    getAllHospitalDetail
   };
 };
