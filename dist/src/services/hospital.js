@@ -96,8 +96,6 @@ let getHospitalAddress = async (hospitalCode) => {
 class HospitalServer extends daruk_1.BaseService {
     async queryAll(currentPage, pageSize) {
         let _result = { code: 200, message: '', stack: '', data: new Array(), total: 0 };
-        console.log(pageSize);
-        console.log(currentPage);
         try {
             let detail = await this.db(hospital_1.Hospital)
                 .skip((currentPage - 1) * pageSize)

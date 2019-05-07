@@ -90,8 +90,6 @@ export default class HospitalServer extends BaseService {
 
   public async queryAll(currentPage: number, pageSize: number) {
     let _result = { code: 200, message: '', stack: '', data: new Array(), total: 0 };
-    console.log(pageSize);
-    console.log(currentPage);
     try {
       let detail = await this.db(Hospital)
         .skip((currentPage - 1) * pageSize)
