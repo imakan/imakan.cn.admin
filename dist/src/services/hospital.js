@@ -32,7 +32,7 @@ let getHospitalDetail = async (hospitalName) => {
     return new Promise((resolve) => {
         let options = {
             method: 'GET',
-            uri: 'http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/ddyy_04_outline_new.jsp?sno=0&spage=0&epage=5&leibie=&suoshu=&sword=' + hospitalName
+            uri: 'http://www.bjrbj.gov.cn/LDJAPP/search/ddyy/ddyy_01_outline_new.jsp?sno=0&spage=0&epage=5&leibie=00&suoshu=00&sword=' + hospitalName
         };
         rp(options)
             .on('response', (res) => {
